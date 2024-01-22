@@ -30,14 +30,22 @@ class CategoryController extends Controller
         $category->title = $request->title;
         $category->save();
 
-        return redirect('/recipes');
+        return redirect('/category')->with('status', "category is geupdate");
     }
 
     public function edit(Category $category)
     {
         $data = [
-            'categories' => $category
+            'category' => $category
         ];
-        return view('categories.index', $data);
+        return view('categories.update', $data);
+    }
+
+    public function delete(Category $category)
+    {
+        $category->posts()->delete();
+        $category->delete();
+
+        return redirect('/category')->with('status', 'category deleted');
     }
 }
